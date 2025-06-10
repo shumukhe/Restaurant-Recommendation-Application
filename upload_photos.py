@@ -5,9 +5,9 @@ import time
 
 # Set credentials (could use dotenv or os.environ for safety)
 cloudinary.config(
-    cloud_name="dnsvyb8zc",
-    api_key="554669476784921",
-    api_secret="Lk2uz4LVDLOK9KE4xDLEW4AEJU0"
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET")
 )
 
 photo_folder = os.path.join("static", "photos")

@@ -1,6 +1,7 @@
 import os
-from flask import Flask, render_template, request, redirect, flash, url_for
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+from flask import Flask, render_template, request, redirect, flash, url_for
+
 from recommend import collab_recommend_restaurants, hybrid_recommend_restaurants, get_search_restaurants
 from model import create_collab_model
 from loader import get_restaurant_data, load_categories
@@ -63,6 +64,6 @@ def restaurant_page(restaurant_id):
     return render_template('restaurant.html', restaurant=restaurant, top_6_restaurants=top_6_restaurants, user_id=user_id)
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', debug=True)
-
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
 #mh_-eMZ6K5RLWhZyISBhwA

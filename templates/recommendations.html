@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yelp Philadelphia</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='recommendations.css') }}">
+</head>
+<body>
+    <div class="header">
+        <h1>Yelp Philadelphia</h1>
+    </div>
+    <div class="container">
+        <div class="content-container">
+            <div class="left-pane">
+                <h2 class="enjoy-heading">What do you wanna enjoy today?</h2>
+                <form class="search-form" action="{{ url_for('search', user_id=user_id) }}" method="post">
+                    <input type="text" id="search" name="search" autocomplete="off" placeholder="Search">
+                    <input type="submit" value="Search">
+                </form>
+
+                <ul class="suggestion-list">
+                    {% for category in major_categories %}
+                        <li class="suggestion-card">
+                            <a href="{{ url_for('search_restaurants', cuisine=category, user_id=user_id) }}">{{ category }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="right-pane">
+                <div class="header">
+                    <h2 class="recommender-heading">Restaurants You Might Like</h2>
+                </div>
+                <div class="restaurant-list">
+                    <div class="restaurant-row">
+                        {% for restaurant in recommended_restaurants %}
+                        <a href="{{ url_for('restaurant_page', restaurant_id=restaurant.id, user_id=user_id) }}" class="restaurant-card">
+                            <img class="restaurant-image" src="{{ restaurant.image_url }}" alt="{{ restaurant.name }}">
+                            <div class="restaurant-name">{{ restaurant.name }}</div>
+                            <div class="restaurant-rating">Rating: {{ restaurant.rating }}</div>
+                        </a>
+                        {% if loop.index % 5 == 0 %}
+                    </div>
+                    <div class="restaurant-row">
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

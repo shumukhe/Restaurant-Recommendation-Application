@@ -1,9 +1,11 @@
+import os
 from flask import Flask, render_template, request, redirect, flash, url_for
 from recommend import collab_recommend_restaurants, hybrid_recommend_restaurants, get_search_restaurants
 from model import create_collab_model
 from loader import get_restaurant_data, load_categories
 import warnings
 import secrets
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)

@@ -8,6 +8,11 @@ from loader import get_restaurant_data, load_categories
 import warnings
 import secrets
 
+from loader import load_data
+
+# Load once at startup
+IDX2BUSINESS, USER2IDX, COLLAB_MODEL, USER_CACHE = load_data()
+
 warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
@@ -28,10 +33,9 @@ def recommendations():
 @app.route('/recommendations/<user_id>')
 def show_recommendations(user_id):
     all_categories = load_categories()
-    top_10_restaurants = collab_recommend_restaurants(user_id)
+    top_10_restaurants = collab_recommend_restaurants(user_id, IDX2BUSINESS, USER2IDX, COLLAB_MODEL, USER_CACHE)
     recommended_restaurants = get_restaurant_data(top_10_restaurants)
     return render_template('recommendations.html', recommended_restaurants=recommended_restaurants, user_id=user_id, major_categories=all_categories)
-
 
 @app.route('/search', methods=['POST'])
 def search():
@@ -50,7 +54,7 @@ def search_restaurants(cuisine):
 def restaurant_page(restaurant_id):
     restaurant_data = get_restaurant_data([restaurant_id])
     user_id = request.args.get('user_id')
-    top_6_restaurants = hybrid_recommend_restaurants(user_id, restaurant_id)
+    top_6_restaurants = hybrid_recommend_restaurants(user_id, restaurant_id, IDX2BUSINESS, USER2IDX, COLLAB_MODEL, USER_CACHE)
     top_6_restaurants = get_restaurant_data(top_6_restaurants)
     restaurant = {
         'id': restaurant_id,
